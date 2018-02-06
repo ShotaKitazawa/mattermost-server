@@ -30,20 +30,8 @@ func (o *PostList) WithRewrittenImageURLs(f func(string) string) *PostList {
 	return &copy
 }
 
-func (o *PostList) StripActionIntegrations() {
-	posts := o.Posts
-	o.Posts = make(map[string]*Post)
-	for id, post := range posts {
-		pcopy := *post
-		pcopy.StripActionIntegrations()
-		o.Posts[id] = &pcopy
-	}
-}
-
 func (o *PostList) ToJson() string {
-	copy := *o
-	copy.StripActionIntegrations()
-	b, err := json.Marshal(&copy)
+	b, err := json.Marshal(&o)
 	if err != nil {
 		return ""
 	} else {

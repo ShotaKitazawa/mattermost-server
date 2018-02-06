@@ -122,6 +122,7 @@ func (o *Post) ToJson() string {
 	copy := *o
 	copy.StripActionIntegrations()
 	b, err := json.Marshal(&copy)
+	b, err := json.Marshal(&o)
 	if err != nil {
 		return ""
 	} else {
@@ -364,18 +365,6 @@ func (o *Post) Attachments() []*SlackAttachment {
 		}
 	}
 	return ret
-}
-
-func (o *Post) StripActionIntegrations() {
-	attachments := o.Attachments()
-	if o.Props["attachments"] != nil {
-		o.Props["attachments"] = attachments
-	}
-	for _, attachment := range attachments {
-		for _, action := range attachment.Actions {
-			action.Integration = nil
-		}
-	}
 }
 
 func (o *Post) GetAction(id string) *PostAction {
